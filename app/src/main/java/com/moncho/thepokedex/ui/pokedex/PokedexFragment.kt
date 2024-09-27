@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.moncho.thepokedex.databinding.FragmentPokedexBinding
 import com.moncho.thepokedex.service.ApiResult
 import com.moncho.thepokedex.service.PokeApiService
@@ -26,8 +27,6 @@ class PokedexFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentPokedexBinding.inflate(inflater, container, false)
 
-        binding.miTextView.text = "Hola alumnos"
-
         return binding.root
     }
 
@@ -38,6 +37,9 @@ class PokedexFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.pokedexRecyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.pokedexRecyclerView.adapter = PokedexAdapter()
 
         //Retrofit:
 
@@ -53,6 +55,8 @@ class PokedexFragment : Fragment() {
         call.enqueue(object : Callback<ApiResult> {
             override fun onResponse(call: Call<ApiResult>, response: Response<ApiResult>) {
                 Log.d("Pokemon", response.body().toString())
+
+                (binding.pokedexRecyclerView.adapter as PokedexAdapter).setData(response.body()!!.results)
             }
 
             override fun onFailure(call: Call<ApiResult>, t: Throwable) {
