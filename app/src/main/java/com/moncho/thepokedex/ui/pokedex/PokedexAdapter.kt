@@ -6,13 +6,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.moncho.thepokedex.R
 import com.moncho.thepokedex.databinding.CardPokedexBinding
-import com.moncho.thepokedex.service.Results
+import com.moncho.thepokedex.service.PokemonResult
+import com.moncho.thepokedex.service.PokemonResults
+
 
 class PokedexAdapter(): RecyclerView.Adapter<PokedexAdapter.PokedexViewHolder>() {
 
-    var pokedexList = emptyList<Results>()
+    var pokedexList = ArrayList<PokemonResults>()
 
-    fun setData(list: List<Results>){
+    fun setData(list: ArrayList<PokemonResults>){
         pokedexList = list
 
         notifyDataSetChanged()

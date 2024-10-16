@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moncho.thepokedex.databinding.FragmentPokedexBinding
-import com.moncho.thepokedex.service.ApiResult
+import com.moncho.thepokedex.service.AllPokemonResult
 import com.moncho.thepokedex.service.PokeApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,14 +52,14 @@ class PokedexFragment : Fragment() {
 
         val call = service.listAllPokemon()
 
-        call.enqueue(object : Callback<ApiResult> {
-            override fun onResponse(call: Call<ApiResult>, response: Response<ApiResult>) {
+        call.enqueue(object : Callback<AllPokemonResult> {
+            override fun onResponse(call: Call<AllPokemonResult>, response: Response<AllPokemonResult>) {
                 Log.d("Pokemon", response.body().toString())
 
                 (binding.pokedexRecyclerView.adapter as PokedexAdapter).setData(response.body()!!.results)
             }
 
-            override fun onFailure(call: Call<ApiResult>, t: Throwable) {
+            override fun onFailure(call: Call<AllPokemonResult>, t: Throwable) {
                 call.cancel()
             }
         })
