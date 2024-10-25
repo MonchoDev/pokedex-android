@@ -60,6 +60,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation(libs.androidx.activity)
+    implementation(libs.firebase.firestore.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
