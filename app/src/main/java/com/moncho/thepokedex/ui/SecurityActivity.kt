@@ -59,7 +59,6 @@ class SecurityActivity : AppCompatActivity() {
                             "Authentication failed.",
                             Toast.LENGTH_SHORT,
                         ).show()
-                        showMain()
                     }
                 }
         }
@@ -83,7 +82,6 @@ class SecurityActivity : AppCompatActivity() {
                             "Authentication failed.",
                             Toast.LENGTH_SHORT,
                         ).show()
-                       showMain()
                     }
                 }
         }

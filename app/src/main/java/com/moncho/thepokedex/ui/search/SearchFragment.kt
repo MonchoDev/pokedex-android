@@ -9,9 +9,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.moncho.thepokedex.databinding.FragmentSearchBinding
 import com.moncho.thepokedex.service.PokeApiService
 import com.moncho.thepokedex.service.PokemonResult
+import com.moncho.thepokedex.service.PokemonResults
 import com.moncho.thepokedex.ui.pokedex.PokedexAdapter
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +38,10 @@ class SearchFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private var currentPokemon: PokemonResult? = null
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,11 +65,21 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = com.google.firebase.Firebase.auth
+
         binding.button.setOnClickListener {
             val pokemonName = binding.pokemonText.text.toString()
             searchPokemon(pokemonName)
         }
 
+        binding.button2.setOnClickListener {
+            val db = Firebase.firestore
+
+            db.collection("usuarios")
+                .document(auth.currentUser!!.uid)
+                .collection("favs")
+                .add(currentPokemon!!)
+        }
     }
 
     private fun searchPokemon(name: String){
@@ -75,6 +94,10 @@ class SearchFragment : Fragment() {
                     .with(requireParentFragment())
                     .load(response.body()!!.sprites!!.frontDefault)
                     .into(binding.pokemonImageView)
+
+                binding.nameTextView.text = response.body()!!.name
+
+                currentPokemon = response.body()!!
             }
 
             override fun onFailure(call: Call<PokemonResult>, t: Throwable) {
